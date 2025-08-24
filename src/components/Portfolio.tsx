@@ -8,6 +8,7 @@ import sm2 from "../public/images/sm2.jpeg";
 import sm3 from "../public/images/sm3.jpeg";
 import sm4 from "../public/images/sm4.png";
 import m1 from "../public/images/m1.jpeg";
+import m2 from "../public/images/m2.jpeg";
 
 const Portfolio = () => {
   const [activeTab, setActiveTab] = useState("dance");
@@ -89,30 +90,13 @@ const Portfolio = () => {
       description: "Article on increasing PCOS cases in India",
       image: m1,
       impact: "Published in journal Gujarat Nursing Mirror",
-      year: "2025",
-    },
-    {
-      title: "Patient Care Innovation",
-      description: "Developed multilingual patient education materials",
-      image:
-        "https://images.pexels.com/photos/4386321/pexels-photo-4386321.jpeg?auto=compress&cs=tinysrgb&w=500",
-      impact: "Implemented hospital-wide",
-      year: "2023",
-    },
-    {
-      title: "Mental Health Awareness",
-      description: "Workshop series on healthcare worker wellbeing",
-      image:
-        "https://images.pexels.com/photos/4386373/pexels-photo-4386373.jpeg?auto=compress&cs=tinysrgb&w=500",
-      impact: "200+ participants",
       year: "2024",
     },
     {
-      title: "Research Contribution",
-      description: "Study on traditional healing practices integration",
-      image:
-        "https://images.pexels.com/photos/4386341/pexels-photo-4386341.jpeg?auto=compress&cs=tinysrgb&w=500",
-      impact: "Published in journal",
+      title: "Fear of missing out(FOMO)",
+      description: "Article on FOMO",
+      image: m2,
+      impact: "Published in journal Gujarat Nursing Mirror",
       year: "2024",
     },
   ];
@@ -166,6 +150,10 @@ const Portfolio = () => {
           className={`grid gap-8 ${
             activeTab === "dance"
               ? "grid-cols-1 md:grid-cols-3"
+              : activeTab === "social"
+              ? "grid-cols-1 md:grid-cols-2 lg:grid-cols-4"
+              : activeTab === "healthcare"
+              ? "grid-cols-1 md:grid-cols-2 lg:grid-cols-2"
               : "grid-cols-1 md:grid-cols-2 lg:grid-cols-4"
           }`}
         >
@@ -180,7 +168,7 @@ const Portfolio = () => {
                 <img
                   src={item.image}
                   alt={item.title}
-                  className={`object-cover group-hover:scale-105 transition-transform duration-300 ${
+                  className={`object-cover group-hover:scale-105 transition-transform duration-300  ${
                     activeTab === "dance" ? "w-full h-64" : "w-full h-80"
                   }`}
                 />
