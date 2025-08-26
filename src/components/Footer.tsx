@@ -88,6 +88,9 @@ const Footer = () => {
             © {currentYear} Dhimahi Pathak. All rights reserved. Built with
             passion and purpose.
           </p>
+          <p className="text-gray-400 pt-2 text-sm">
+            Made with ❤️ by Someone 🤫 and Somewhere 🌎
+          </p>
         </div>
       </div>
     </footer>
