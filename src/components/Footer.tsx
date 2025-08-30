@@ -1,8 +1,14 @@
 import React from "react";
-import { Heart, Mail, Phone, MapPin } from "lucide-react";
+import { Heart, Mail, MapPin } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
+  const navigate = useNavigate();
+
+  const handleSomeoneClick = () => {
+    navigate("/redirect");
+  };
 
   return (
     <footer className="bg-gray-900 text-white py-12">
@@ -89,7 +95,20 @@ const Footer = () => {
             passion and purpose.
           </p>
           <p className="text-gray-400 pt-2 text-sm">
-            Made with ❤️ by Someone 🤫 and Somewhere 🌎
+            Made with ❤️ by{" "}
+            <span>
+              <a
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleSomeoneClick();
+                }}
+                className="text-indigo-400 hover:text-indigo-300 transition-colors duration-200 cursor-pointer"
+              >
+                Someone
+              </a>
+            </span>{" "}
+            🤫 and Somewhere 🌎
           </p>
         </div>
       </div>
