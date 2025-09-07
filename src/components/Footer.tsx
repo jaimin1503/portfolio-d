@@ -33,7 +33,7 @@ const Footer = () => {
           </div>
 
           {/* Quick Links */}
-          <div className="text-center">
+          <div className="text-left mx-auto">
             <h4 className="text-lg font-semibold text-white mb-4">
               Quick Links
             </h4>

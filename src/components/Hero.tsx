@@ -2,6 +2,7 @@ import React from "react";
 import { ChevronDown, Download, Mail } from "lucide-react";
 import dhimahi from "../public/images/dhimahi.jpeg";
 import dhimahiProf from "../public/images/dhimahiProf.jpeg";
+import resume from "../public/DHIMAHI ASHISHKUMAR PATHAK 2.pdf";
 
 const Hero = () => {
   const scrollToAbout = () => {
@@ -45,7 +46,10 @@ const Hero = () => {
                 <Mail className="mr-2" size={20} />
                 Get In Touch
               </button>
-              <button className="inline-flex items-center px-6 py-3 border border-blue-600 text-blue-600 font-medium rounded-lg hover:bg-blue-50 transition-colors duration-200">
+              <button
+                onClick={() => window.open(resume, "_blank")}
+                className="inline-flex items-center px-6 py-3 border border-blue-600 text-blue-600 font-medium rounded-lg hover:bg-blue-50 transition-colors duration-200"
+              >
                 <Download className="mr-2" size={20} />
                 Download CV
               </button>
