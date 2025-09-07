@@ -1,8 +1,43 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Heart, Users, Star, Award } from "lucide-react";
 import dhimahiNurse from "../public/images/dhimahiNurse.jpeg";
 
 const About = () => {
+  const [isVisible, setIsVisible] = useState(false);
+  const [visibleCards, setVisibleCards] = useState<number[]>([]);
+  const sectionRef = useRef<HTMLElement>(null);
+  const cardsRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          // Stagger animation for cards
+          for (let i = 0; i < highlights.length; i++) {
+            setTimeout(() => {
+              setVisibleCards((prev) => [...prev, i]);
+            }, i * 200);
+          }
+        }
+      },
+      {
+        threshold: 0.1,
+        rootMargin: "0px 0px -50px 0px",
+      }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => {
+      if (sectionRef.current) {
+        observer.unobserve(sectionRef.current);
+      }
+    };
+  }, []);
+
   const highlights = [
     {
       icon: <Heart className="text-red-500" size={24} />,
@@ -31,9 +66,13 @@ const About = () => {
   ];
 
   return (
-    <section id="about" className="py-20 bg-white">
+    <section ref={sectionRef} id="about" className="py-20 bg-white">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
+        <div
+          className={`text-center mb-16 ${
+            isVisible ? "animate-fadeInUp" : "opacity-0"
+          }`}
+        >
           <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
             About Me
           </h2>
@@ -43,12 +82,17 @@ const About = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
-          <div>
+        <div
+          className={`grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16 ${
+            isVisible ? "animate-fadeInUp" : "opacity-0"
+          }`}
+          style={{ animationDelay: "0.2s" }}
+        >
+          <div className="group">
             <img
               src={dhimahiNurse}
               alt="Dhimahi in medical setting"
-              className="rounded-xl shadow-lg w-full h-80 object-cover"
+              className="rounded-xl shadow-lg w-full h-80 object-cover group-hover:scale-105 transition-transform duration-500 hover-lift"
             />
           </div>
 
@@ -77,14 +121,22 @@ const About = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div
+          ref={cardsRef}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
+        >
           {highlights.map((highlight, index) => (
             <div
               key={index}
-              className="text-center p-6 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors duration-200"
+              className={`text-center p-6 rounded-xl bg-gray-50 hover:bg-gray-100 transition-all duration-300 hover-lift group ${
+                visibleCards.includes(index) ? "animate-scaleIn" : "opacity-0"
+              }`}
+              style={{ animationDelay: `${index * 0.2}s` }}
             >
-              <div className="flex justify-center mb-4">{highlight.icon}</div>
-              <h4 className="text-lg font-semibold text-gray-900 mb-2">
+              <div className="flex justify-center mb-4 group-hover:animate-bounce-slow">
+                {highlight.icon}
+              </div>
+              <h4 className="text-lg font-semibold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors duration-300">
                 {highlight.title}
               </h4>
               <p className="text-gray-600 text-sm">{highlight.description}</p>

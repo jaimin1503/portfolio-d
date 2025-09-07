@@ -1,7 +1,41 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Calendar, MapPin, Building } from "lucide-react";
 
 const Experience = () => {
+  const [isVisible, setIsVisible] = useState(false);
+  const [visibleItems, setVisibleItems] = useState<number[]>([]);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          // Stagger animation for timeline items
+          for (let i = 0; i < experiences.length; i++) {
+            setTimeout(() => {
+              setVisibleItems((prev) => [...prev, i]);
+            }, i * 300);
+          }
+        }
+      },
+      {
+        threshold: 0.1,
+        rootMargin: "0px 0px -50px 0px",
+      }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => {
+      if (sectionRef.current) {
+        observer.unobserve(sectionRef.current);
+      }
+    };
+  }, []);
+
   const experiences = [
     {
       title: "General Internship - Operations",
@@ -51,9 +85,13 @@ const Experience = () => {
   ];
 
   return (
-    <section id="experience" className="py-20 bg-gray-50">
+    <section ref={sectionRef} id="experience" className="py-20 bg-gray-50">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
+        <div
+          className={`text-center mb-16 ${
+            isVisible ? "animate-fadeInUp" : "opacity-0"
+          }`}
+        >
           <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
             Professional Experience
           </h2>
@@ -64,47 +102,64 @@ const Experience = () => {
 
         <div className="space-y-12">
           {experiences.map((exp, index) => (
-            <div key={index} className="relative">
+            <div
+              key={index}
+              className={`relative ${
+                visibleItems.includes(index)
+                  ? "animate-fadeInLeft"
+                  : "opacity-0"
+              }`}
+              style={{ animationDelay: `${index * 0.3}s` }}
+            >
               {/* Timeline line */}
               {index !== experiences.length - 1 && (
-                <div className="absolute left-6 top-20 w-0.5 h-32 bg-blue-200 hidden sm:block"></div>
+                <div className="absolute left-6 top-20 w-0.5 h-32 bg-blue-200 hidden sm:block animate-pulse-slow"></div>
               )}
 
-              <div className="flex flex-col sm:flex-row gap-8">
+              <div className="flex flex-col sm:flex-row gap-8 group">
                 {/* Timeline dot */}
                 <div className="flex-shrink-0">
-                  <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center">
-                    <Building className="text-white" size={20} />
+                  <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center group-hover:animate-pulse-slow transition-all duration-300 group-hover:scale-110">
+                    <Building
+                      className="text-white group-hover:animate-wiggle"
+                      size={20}
+                    />
                   </div>
                 </div>
 
                 {/* Content */}
-                <div className="flex-grow bg-white rounded-xl shadow-sm p-8 hover:shadow-md transition-shadow duration-200">
+                <div className="flex-grow bg-white rounded-xl shadow-sm p-8 hover:shadow-lg transition-all duration-300 hover-lift group">
                   <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between mb-4">
                     <div>
-                      <h3 className="text-xl font-bold text-gray-900 mb-2">
+                      <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors duration-300">
                         {exp.title}
                       </h3>
-                      <p className="text-lg text-blue-600 font-medium mb-2">
+                      <p className="text-lg text-blue-600 font-medium mb-2 group-hover:text-blue-700 transition-colors duration-300">
                         {exp.organization}
                       </p>
                     </div>
                     <div className="flex flex-col lg:items-end text-sm text-gray-500">
-                      <div className="flex items-center mb-1">
-                        <Calendar size={16} className="mr-1" />
+                      <div className="flex items-center mb-1 group-hover:text-gray-700 transition-colors duration-300">
+                        <Calendar
+                          size={16}
+                          className="mr-1 group-hover:animate-bounce"
+                        />
                         {exp.period}
                       </div>
-                      <div className="flex items-center mb-1">
-                        <MapPin size={16} className="mr-1" />
+                      <div className="flex items-center mb-1 group-hover:text-gray-700 transition-colors duration-300">
+                        <MapPin
+                          size={16}
+                          className="mr-1 group-hover:animate-bounce"
+                        />
                         {exp.location}
                       </div>
                       <span
-                        className={`px-2 py-1 rounded-full text-xs font-medium ${
+                        className={`px-2 py-1 rounded-full text-xs font-medium transition-all duration-300 group-hover:scale-105 ${
                           exp.type === "Current Position"
-                            ? "bg-green-100 text-green-800"
+                            ? "bg-green-100 text-green-800 group-hover:bg-green-200"
                             : exp.type === "Educational"
-                            ? "bg-blue-100 text-blue-800"
-                            : "bg-purple-100 text-purple-800"
+                            ? "bg-blue-100 text-blue-800 group-hover:bg-blue-200"
+                            : "bg-purple-100 text-purple-800 group-hover:bg-purple-200"
                         }`}
                       >
                         {exp.type}
@@ -112,19 +167,21 @@ const Experience = () => {
                     </div>
                   </div>
 
-                  <p className="text-gray-600 mb-6">{exp.description}</p>
+                  <p className="text-gray-600 mb-6 group-hover:text-gray-700 transition-colors duration-300">
+                    {exp.description}
+                  </p>
 
                   <div>
-                    <h4 className="text-sm font-semibold text-gray-900 mb-3">
+                    <h4 className="text-sm font-semibold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors duration-300">
                       Key Achievements:
                     </h4>
                     <ul className="grid grid-cols-1 md:grid-cols-2 gap-2">
                       {exp.highlights.map((highlight, hIndex) => (
                         <li
                           key={hIndex}
-                          className="flex items-start text-sm text-gray-600"
+                          className="flex items-start text-sm text-gray-600 group-hover:text-gray-700 transition-colors duration-300"
                         >
-                          <span className="w-2 h-2 bg-blue-400 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                          <span className="w-2 h-2 bg-blue-400 rounded-full mt-2 mr-3 flex-shrink-0 group-hover:animate-pulse-slow"></span>
                           {highlight}
                         </li>
                       ))}
