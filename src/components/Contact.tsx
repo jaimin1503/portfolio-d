@@ -73,8 +73,8 @@ const Contact = () => {
     {
       icon: <Mail className="text-blue-600" size={24} />,
       title: "Email",
-      content: "dhimahi258@gmail.com",
-      link: "mailto:dhimahi258@gmail.com",
+      content: "dhipathak25@gmail.com",
+      link: "mailto:dhipathak25@gmail.com",
     },
     {
       icon: <MapPin className="text-red-600" size={24} />,

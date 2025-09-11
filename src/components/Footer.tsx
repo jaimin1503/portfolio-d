@@ -105,7 +105,7 @@ const Footer = () => {
                 style={{ animationDelay: "0.3s" }}
               >
                 <Mail size={16} className="mr-2 group-hover:animate-bounce" />
-                <span className="text-sm">dhimahi258@gmail.com</span>
+                <span className="text-sm">dhipathak25@gmail.com</span>
               </div>
               <div
                 className={`flex items-center justify-center md:justify-end text-gray-400 group-hover:text-gray-300 transition-all duration-300 ${
